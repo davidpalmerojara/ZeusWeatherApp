@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { City, CityData } from '@/app/_lib/definitions';
+import { CityData } from '@/app/_lib/definitions';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { geoLocate, handleSearch } from '@/app/_lib/searchUtils';
 import PopularCities from '@/app/_lib/ui/PopularCities';
@@ -13,13 +13,14 @@ export default function Search() {
   const [searchValue, setSearchValue] = useState('');
   const [cityList, setCityList] = useState<CityData | null>(null);
   const ref = useRef<HTMLFormElement>(null);
+
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { push } = useRouter();
 
   useEffect(() => {
-    const handleOutSideClick = (e: any): void => {
-      if (!ref.current?.contains(e.target)) {
+    const handleOutSideClick = (e: MouseEvent): void => {
+      if (!ref.current?.contains(e.target as Node)) {
         setError(null);
         setSearchValue('');
         setCityList(null);
@@ -36,8 +37,8 @@ export default function Search() {
     handleSearch(searchValue, setCityList, setError);
   }, 200);
 
-  const handleChange = (e: string) => {
-    setSearchValue(e);
+  const handleChange = (value: string) => {
+    setSearchValue(value);
     handleSearchDebounced();
   };
 

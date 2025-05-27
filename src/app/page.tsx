@@ -1,6 +1,7 @@
 'use client';
 
 import Search from '@/app/_components/Search';
+import { Suspense } from 'react';
 console.log(process.env.API_KEY);
 export default function Home() {
   return (
@@ -15,7 +16,9 @@ export default function Home() {
         </span>{' '}
         in the world
       </p>
-      <Search />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Search />
+      </Suspense>
     </main>
   );
 }
